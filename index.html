@@ -1,76 +1,193 @@
-#timer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  color: #a6a6a6;
-  font-family: 'Inter', sans-serif;
-}
 
-.timer-title {
-  flex: 0 0 auto;
-  color: #b5b5b5;
-  font-size: 0.85rem;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0.3px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-.timer-units {
-  display: flex;
-  flex: 1;
-  gap: 8px;
-  min-width: 0;
-}
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Inter:400,500,600">
 
-.unit {
-  flex: 1;
-  min-width: 0;
-  padding: 14px 4px 12px;
-  background: #222222;
-  border: 1px solid #303030;
-  border-radius: 8px;
-}
+  <title>Time Left to Meet</title>
 
-.numbers {
-  color: #e5e5e5;
-  font-size: clamp(1.2rem, 4vw, 2rem);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.2;
-  letter-spacing: -1px;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-.label {
-  margin-top: 8px;
-  color: #858585;
-  font-size: 0.6rem;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+    body {
+      margin: 0;
+      padding: 12px;
+      background: #191919;
+      font-family: 'Inter', sans-serif;
+    }
 
-@media (max-width: 420px) {
-  #timer {
-    gap: 10px;
-  }
+    #timer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      color: #a6a6a6;
+    }
 
-  .timer-title {
-    max-width: 75px;
-    font-size: 0.75rem;
-  }
+    .timer-title {
+      flex: 0 0 auto;
+      color: #b5b5b5;
+      font-size: 0.85rem;
+      font-weight: 500;
+      line-height: 1.6;
+      letter-spacing: 0.3px;
+    }
 
-  .timer-units {
-    gap: 4px;
-  }
+    .timer-units {
+      display: flex;
+      flex: 1;
+      gap: 8px;
+      min-width: 0;
+    }
 
-  .unit {
-    padding: 12px 2px 10px;
-  }
+    .unit {
+      flex: 1;
+      min-width: 0;
+      padding: 14px 4px 12px;
+      background: #222222;
+      border: 1px solid #303030;
+      border-radius: 8px;
+      text-align: center;
+    }
 
-  .label {
-    font-size: 0.48rem;
-    letter-spacing: 0;
-  }
-}
+    .numbers {
+      color: #e5e5e5;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .label {
+      margin-top: 8px;
+      color: #858585;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 420px) {
+      #timer {
+        gap: 10px;
+      }
+
+      .timer-title {
+        max-width: 75px;
+        font-size: 0.75rem;
+      }
+
+      .timer-units {
+        gap: 4px;
+      }
+
+      .unit {
+        padding: 12px 2px 10px;
+        border-radius: 6px;
+      }
+
+      .numbers {
+        font-size: clamp(1rem, 4vw, 1.4rem);
+      }
+
+      .label {
+        font-size: 0.48rem;
+        letter-spacing: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="timer">
+
+    <div class="timer-title">
+      Time left<br>to meet
+    </div>
+
+    <div class="timer-units">
+
+      <div class="unit">
+        <div id="days" class="numbers">00</div>
+        <div class="label">Days</div>
+      </div>
+
+      <div class="unit">
+        <div id="hours" class="numbers">00</div>
+        <div class="label">Hours</div>
+      </div>
+
+      <div class="unit">
+        <div id="minutes" class="numbers">00</div>
+        <div class="label">Minutes</div>
+      </div>
+
+      <div class="unit">
+        <div id="seconds" class="numbers">00</div>
+        <div class="label">Seconds</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Target date and time (local timezone)
+    const targetDate = new Date(
+      'Oct 15, 2026 10:00:00'
+    ).getTime();
+
+    const elements = {
+      days: document.getElementById('days'),
+      hours: document.getElementById('hours'),
+      minutes: document.getElementById('minutes'),
+      seconds: document.getElementById('seconds')
+    };
+
+    function updateTimer() {
+      const diff = Math.max(0, targetDate - Date.now());
+
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor(
+        (diff % 86400000) / 3600000
+      );
+      const minutes = Math.floor(
+        (diff % 3600000) / 60000
+      );
+      const seconds = Math.floor(
+        (diff % 60000) / 1000
+      );
+
+      elements.days.textContent =
+        String(days).padStart(2, '0');
+
+      elements.hours.textContent =
+        String(hours).padStart(2, '0');
+
+      elements.minutes.textContent =
+        String(minutes).padStart(2, '0');
+
+      elements.seconds.textContent =
+        String(seconds).padStart(2, '0');
+
+      if (diff === 0) {
+        clearInterval(timer);
+      }
+    }
+
+    updateTimer();
+
+    const timer = setInterval(updateTimer, 1000);
+  </script>
+
+</body>
+</html>
