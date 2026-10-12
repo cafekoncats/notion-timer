@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,25 +23,28 @@
 
     #timer {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 20px;
+      gap: 10px 20px;
       width: 100%;
       color: #a6a6a6;
     }
 
     .timer-title {
       flex: 0 0 auto;
-      color: #b5b5b5;
+      color: #d0d0d0;
       font-size: 0.85rem;
       font-weight: 500;
       line-height: 1.6;
       letter-spacing: 0.3px;
+      white-space: nowrap;
+      text-align: center;
     }
 
     .timer-units {
       display: flex;
-      flex: 1;
+      flex: 1 1 240px;
       gap: 8px;
       min-width: 0;
     }
@@ -77,11 +79,10 @@
 
     @media (max-width: 420px) {
       #timer {
-        gap: 10px;
+        gap: 8px 10px;
       }
 
       .timer-title {
-        max-width: 75px;
         font-size: 0.75rem;
       }
 
@@ -142,9 +143,7 @@
 
   <script>
     // Target date and time (local timezone)
-    const targetDate = new Date(
-      'Oct 15, 2026 10:00:00'
-    ).getTime();
+    const targetDate = new Date('Oct 15, 2026 10:00:00').getTime();
 
     const elements = {
       days: document.getElementById('days'),
@@ -153,40 +152,28 @@
       seconds: document.getElementById('seconds')
     };
 
+    let timer;
+
     function updateTimer() {
       const diff = Math.max(0, targetDate - Date.now());
 
       const days = Math.floor(diff / 86400000);
-      const hours = Math.floor(
-        (diff % 86400000) / 3600000
-      );
-      const minutes = Math.floor(
-        (diff % 3600000) / 60000
-      );
-      const seconds = Math.floor(
-        (diff % 60000) / 1000
-      );
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
 
-      elements.days.textContent =
-        String(days).padStart(2, '0');
-
-      elements.hours.textContent =
-        String(hours).padStart(2, '0');
-
-      elements.minutes.textContent =
-        String(minutes).padStart(2, '0');
-
-      elements.seconds.textContent =
-        String(seconds).padStart(2, '0');
+      elements.days.textContent = String(days).padStart(2, '0');
+      elements.hours.textContent = String(hours).padStart(2, '0');
+      elements.minutes.textContent = String(minutes).padStart(2, '0');
+      elements.seconds.textContent = String(seconds).padStart(2, '0');
 
       if (diff === 0) {
         clearInterval(timer);
       }
     }
 
+    timer = setInterval(updateTimer, 1000);
     updateTimer();
-
-    const timer = setInterval(updateTimer, 1000);
   </script>
 
 </body>
