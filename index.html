@@ -1,134 +1,137 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:900">
-    <title>Document</title>
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-body{
-    background-color: white;
-}
-  
-#timer {
-  color: #eeeeee;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: 'Lato', sans-serif;
-  font-size: .7em;
-  letter-spacing: 5px;
-}
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Inter:400,500,600">
 
-.days, .hours, .minutes, .seconds {
-  display: inline-block;
-  padding: 20px;
-  width: 100px;
-  border-radius: 5px;
-}
+  <title>Countdown Timer</title>
 
-.days {
-  background: #EF2F3C;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-.hours {
-  background: #eeeeee;
-  color: #183059;
-}
+    body {
+      margin: 0;
+      padding: 12px;
+      background: #191919;
+      font-family: 'Inter', sans-serif;
+    }
 
-.minutes {
-  background: #276FBF;
-}
+    #timer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      color: #a6a6a6;
+      text-align: center;
+    }
 
-.seconds {
-  background: #F0A202;
-}
+    .unit {
+      flex: 1;
+      min-width: 0;
+      padding: 18px 6px 14px;
+      background: #222222;
+      border: 1px solid #303030;
+      border-radius: 8px;
+    }
 
-.numbers {
-  font-family: 'Montserrat', sans-serif;
-  color:  #183059;
-  font-size: 4em;
-  text-align: center;
-}
+    .numbers {
+      color: #e5e5e5;
+      font-size: clamp(1.4rem, 5vw, 2.2rem);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
 
-.white {
-  position: absolute;
-  background:  #eeeeee;
-  height: 85px;
-  width: 75px;
-  left: 30%;
-  top: 2%;
-}
+    .label {
+      margin-top: 8px;
+      color: #858585;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
 
-.red {
-  position: absolute;
-  background:  #EF2F3C;
-  left: 18%;
-  top: 9%;
-  height: 65px;
-  width: 70px;
- 
-}
+    @media (max-width: 360px) {
+      #timer {
+        gap: 6px;
+      }
 
-.blue {
-  position: absolute;
-  background:  #276FBF;
-  height: 80px;
-  width: 80px;
-  left: 60%;
-  top: 5%;
+      .unit {
+        padding: 14px 3px 12px;
+      }
 
-
-}
-
-
-    </style>
+      .label {
+        font-size: 0.55rem;
+        letter-spacing: 1px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    
-<div id="timer">
 
-    <div class="days"> 
-        <div id="days" class="numbers "> </div>days</div> 
-      <div class="hours"> 
-        <div  id="hours" class="numbers"> </div>hours</div> 
-      <div class="minutes"> 
-        <div  id="minutes" class="numbers"> </div>minutes</div> 
-      <div   class="seconds"> 
-        <div id="seconds" class="numbers"> </div>seconds</div> 
-      </div>
+  <div id="timer">
+    <div class="unit">
+      <div id="days" class="numbers">00</div>
+      <div class="label">Days</div>
+    </div>
 
-</div>
+    <div class="unit">
+      <div id="hours" class="numbers">00</div>
+      <div class="label">Hours</div>
+    </div>
+
+    <div class="unit">
+      <div id="minutes" class="numbers">00</div>
+      <div class="label">Minutes</div>
+    </div>
+
+    <div class="unit">
+      <div id="seconds" class="numbers">00</div>
+      <div class="label">Seconds</div>
+    </div>
+  </div>
+
+  <script>
+    // Set your target date and time here.
+    const targetDate = new Date('Oct 15, 2026 10:00:00').getTime();
+
+    const elements = {
+      days: document.getElementById('days'),
+      hours: document.getElementById('hours'),
+      minutes: document.getElementById('minutes'),
+      seconds: document.getElementById('seconds')
+    };
+
+    function updateTimer() {
+      const diff = Math.max(0, targetDate - Date.now());
+
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+
+      elements.days.textContent = String(days).padStart(2, '0');
+      elements.hours.textContent = String(hours).padStart(2, '0');
+      elements.minutes.textContent = String(minutes).padStart(2, '0');
+      elements.seconds.textContent = String(seconds).padStart(2, '0');
+
+      if (diff === 0) {
+        clearInterval(timer);
+      }
+    }
+
+    updateTimer();
+    const timer = setInterval(updateTimer, 1000);
+  </script>
 
 </body>
-<script>
-    const year = new Date().getFullYear();
-const myDate = new Date('Oct 15, 2026 10:00:00');
-console.log(myDate);
-
-// countdown
-let timer = setInterval(function() {
-
-  // get today's date
-  const today = new Date().getTime();
-
-  // get the difference
-  const diff = myDate - today;
-
-  // math
-  let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  let seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  // display
-  document.getElementById("days").innerHTML=days
-  document.getElementById("hours").innerHTML=hours
-  document.getElementById("minutes").innerHTML=minutes
-  document.getElementById("seconds").innerHTML=seconds
-
-
-
-}, 1);
-</script>
 </html>
