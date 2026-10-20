@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Inter:400,500,600">
 
-  <title>TIME LEFT TO MEET MY JOO :</title>
+  <title>TIME LEFT TO MEET MY JOO</title>
 
   <style>
     * {
@@ -142,8 +143,8 @@
   </div>
 
   <script>
-    // Target date and time (local timezone)
-    const targetDate = new Date('Oct 15, 2026 09:30:00').getTime();
+    // Target date and time in the viewer's local timezone
+    const targetDate = new Date('Oct 15, 2026 10:00:00').getTime();
 
     const elements = {
       days: document.getElementById('days'),
@@ -152,37 +153,34 @@
       seconds: document.getElementById('seconds')
     };
 
-    let timer;
-
-<script>
-  // Target date and time (local timezone)
-  const targetDate = new Date('Oct 15, 2026 10:00:00').getTime();
-
-  const elements = {
-    days: document.getElementById('days'),
-    hours: document.getElementById('hours'),
-    minutes: document.getElementById('minutes'),
-    seconds: document.getElementById('seconds')
-  };
-
     function updateTimer() {
       const diff = targetDate - Date.now();
-  
+
+      // Use absolute time difference so the timer continues after zero
       const totalSeconds = Math.floor(Math.abs(diff) / 1000);
-  
+
       const days = Math.floor(totalSeconds / 86400);
       const hours = Math.floor((totalSeconds % 86400) / 3600);
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 60;
-  
+
+      // Add a minus sign once the target time has passed
       const sign = diff < 0 ? '-' : '';
-  
-      elements.days.textContent = sign + String(days).padStart(2, '0');
-      elements.hours.textContent = sign + String(hours).padStart(2, '0');
-      elements.minutes.textContent = sign + String(minutes).padStart(2, '0');
-      elements.seconds.textContent = sign + String(seconds).padStart(2, '0');
+
+      elements.days.textContent =
+        sign + String(days).padStart(2, '0');
+
+      elements.hours.textContent =
+        sign + String(hours).padStart(2, '0');
+
+      elements.minutes.textContent =
+        sign + String(minutes).padStart(2, '0');
+
+      elements.seconds.textContent =
+        sign + String(seconds).padStart(2, '0');
     }
-  
+
+    // Display immediately and refresh every second
     updateTimer();
     setInterval(updateTimer, 1000);
   </script>
