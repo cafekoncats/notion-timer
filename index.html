@@ -143,7 +143,7 @@
 
   <script>
     // Target date and time (local timezone)
-    const targetDate = new Date('Oct 15, 2026 10:00:00').getTime();
+    const targetDate = new Date('Oct 15, 2026 09:30:00').getTime();
 
     const elements = {
       days: document.getElementById('days'),
@@ -154,26 +154,37 @@
 
     let timer;
 
+<script>
+  // Target date and time (local timezone)
+  const targetDate = new Date('Oct 15, 2026 10:00:00').getTime();
+
+  const elements = {
+    days: document.getElementById('days'),
+    hours: document.getElementById('hours'),
+    minutes: document.getElementById('minutes'),
+    seconds: document.getElementById('seconds')
+  };
+
     function updateTimer() {
-      const diff = Math.max(0, targetDate - Date.now());
-
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const minutes = Math.floor((diff % 3600000) / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
-
-      elements.days.textContent = String(days).padStart(2, '0');
-      elements.hours.textContent = String(hours).padStart(2, '0');
-      elements.minutes.textContent = String(minutes).padStart(2, '0');
-      elements.seconds.textContent = String(seconds).padStart(2, '0');
-
-      if (diff === 0) {
-        clearInterval(timer);
-      }
+      const diff = targetDate - Date.now();
+  
+      const totalSeconds = Math.floor(Math.abs(diff) / 1000);
+  
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+  
+      const sign = diff < 0 ? '-' : '';
+  
+      elements.days.textContent = sign + String(days).padStart(2, '0');
+      elements.hours.textContent = sign + String(hours).padStart(2, '0');
+      elements.minutes.textContent = sign + String(minutes).padStart(2, '0');
+      elements.seconds.textContent = sign + String(seconds).padStart(2, '0');
     }
-
-    timer = setInterval(updateTimer, 1000);
+  
     updateTimer();
+    setInterval(updateTimer, 1000);
   </script>
 
 </body>
